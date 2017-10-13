@@ -1,0 +1,52 @@
+---
+tasks:
+  - name: Gather Facts
+    bigip_facts:
+      server: {{ hostname  }}
+      user: {{ hostname.user }}
+      password: {{ hostname.password }}
+      include:
+       - certificate
+       - client_ssl_profile
+       - virtual_address
+       - virtual_server
+      validate_certs: False
+    delegate_to: localhost
+    with_items: hosts
+
+
+  - name: Upload Certificate and Key
+    bigip_ssl_certificate:
+      server: {{ hostname  }}
+      user: {{ hostname.user }}
+      password: {{ hostname.password }}
+      name: {{ cert.name }}
+      state: "present"
+      cert_src: "{{ cert.name }}/cert.pem"
+      key_src: "{{ cert.name }}/key.pem"
+    delegate_to: localhost
+    with_items: hosts
+
+  - name: Upload Bundle
+    bigip_ssl_certificate:
+      server: {{ hostname  }}
+      user: {{ hostname.user }}
+      password: {{ hostname.password }}
+      name: {{ cert.name }}_bundle
+      state: "present"
+      cert_src: "{{ cert.name }}/bundle.pem"
+    delegate_to: localhost
+    with_items: hosts
+
+  - name: Create SSL Client Profile
+    bigip_profile_client_ssl:
+      server: {{ hostname  }}
+      user: {{ hostname.user }}
+      password: {{ hostname.password }}
+      name: {{ cert.name }}
+      cert_key_chain:
+        cert: {{ cert.name }}
+        chain: {{ cert.name }}_bundle
+      ciphers: {{ cipher_list }}
+    delegate_to: localhost
+    with_items: hosts

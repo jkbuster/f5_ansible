@@ -1,0 +1,27 @@
+[ req ]
+default_bits       = 4096
+default_md         = sha512
+default_keyfile    = key.pem
+prompt             = no
+encrypt_key        = no
+
+# base request
+distinguished_name = req_distinguished_name
+
+# extensions
+req_extensions     = v3_req
+
+# distinguished_name
+[ req_distinguished_name ]
+countryName            = "US"
+stateOrProvinceName    = "Colorado"
+localityName           = "Golden"
+postalCode             = "80401"
+organizationName       = "JKBuster, LLC"
+organizationalUnitName = "site1"
+commonName             = "site1.jkbuster.com"
+emailAddress           = "webmaster@jkbuster.com"
+
+# req_extensions
+[ v3_req ]
+subjectAltName  = DNS:site1.jkbuster.com,DNS:www.site1.jkbuster.com

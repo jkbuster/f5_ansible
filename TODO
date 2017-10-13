@@ -1,0 +1,6 @@
+Create dummy TLS certificates in each site's directory
+     This should include CNF, CSR, CRT, KEY, and BUNDLE files
+Build the inventory file
+Ensure all certs are placed on each host in inventory
+Create ssl profiles for each site there's a cert for, on each F5
+Limit the sites as defined in inventory groups
